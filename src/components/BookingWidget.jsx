@@ -3,8 +3,8 @@ import { api } from '../services/api';
 import TimezoneSelector from './TimezoneSelector';
 
 export default function BookingWidget({ slug: initialSlug, initialStartDate }) {
-  const [slug, setSlug] = useState(initialSlug || 'backend-sde1');
-  const [startDate, setStartDate] = useState(initialStartDate || '');
+  const [slug, setSlug] = useState(initialSlug || 'sde');
+  const [startDate, setStartDate] = useState(initialStartDate || '2026-06-20');
   const [timezone, setTimezone] = useState('Asia/Kolkata');
   const [linkConfig, setLinkConfig] = useState(null);
   const [slots, setSlots] = useState([]);
