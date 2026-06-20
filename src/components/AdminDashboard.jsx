@@ -726,7 +726,7 @@ export default function AdminDashboard() {
                           </span>
                         ) : (
                           <a
-                            href={`http://localhost:3000/auth/google?interviewerId=${interviewer.id}`}
+                            href={`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:3000'}/auth/google?interviewerId=${interviewer.id}`}
                             className="text-[10px] font-bold px-2 py-0.5 rounded bg-indigo-500/20 text-indigo-400 border border-indigo-500/30 hover:bg-indigo-600 hover:text-white transition select-none cursor-pointer"
                           >
                             Connect Google Calendar
