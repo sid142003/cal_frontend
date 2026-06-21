@@ -49,9 +49,13 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col bg-[#0b0f19] bg-grid relative overflow-hidden">
+      {/* Background Glow Blobs */}
+      <div className="absolute top-[-20%] left-[-10%] w-[600px] h-[600px] bg-indigo-500/10 blur-[150px] rounded-full pointer-events-none -z-10 animate-pulse-slow"></div>
+      <div className="absolute bottom-[-20%] right-[-10%] w-[600px] h-[600px] bg-violet-500/10 blur-[150px] rounded-full pointer-events-none -z-10 animate-pulse-slow" style={{ animationDelay: '4s' }}></div>
+
       {/* Premium Glassmorphic Header */}
-      <header className="sticky top-0 z-50 w-full glass-panel-light border-b border-white/5 py-4 px-6 md:px-12 flex justify-between items-center">
+      <header className="sticky top-0 z-50 w-full glass-panel-light border-b border-white/5 py-4 px-6 md:px-12 flex justify-between items-center backdrop-blur-md">
         {/* Logo */}
         <div 
           onClick={() => navigateTo('/')} 
@@ -63,7 +67,7 @@ export default function App() {
             </svg>
           </div>
           <span className="font-display font-black text-lg tracking-tight bg-gradient-to-r from-white via-slate-100 to-slate-400 bg-clip-text text-transparent">
-            ANTIGRAVITY<span className="text-indigo-400 font-bold ml-1 font-sans text-sm">SCHEDULER</span>
+            BOOK<span className="text-indigo-400 font-bold ml-1 font-sans text-sm">SMART</span>
           </span>
         </div>
 
@@ -105,7 +109,7 @@ export default function App() {
 
       {/* Footer */}
       <footer className="w-full border-t border-white/5 py-4 text-center text-xs text-slate-500">
-        © 2026 Antigravity Scheduling Inc. MVP Production Suite. All rights reserved.
+        © 2026 BookSmart Inc. MVP Production Suite. All rights reserved.
       </footer>
     </div>
   );

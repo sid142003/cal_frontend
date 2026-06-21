@@ -145,7 +145,7 @@ export default function BookingWidget({ slug: initialSlug, initialStartDate }) {
     <div className="w-full max-w-4xl mx-auto py-8 px-4">
       {/* Title / Slug Selector */}
       {!initialSlug && (
-        <div className="mb-6 flex flex-col sm:flex-row gap-4 items-center justify-between bg-white/5 border border-white/10 p-4 rounded-2xl backdrop-blur-md">
+        <div className="mb-6 flex flex-col sm:flex-row gap-4 items-center justify-between glass-panel border border-white/10 p-5 rounded-2xl backdrop-blur-md transition-all duration-300 hover:border-indigo-500/20">
           <div className="flex items-center gap-2">
             <span className="w-2.5 h-2.5 bg-indigo-500 rounded-full animate-ping"></span>
             <span className="text-sm font-medium text-slate-300">Public Booking Portal</span>
@@ -222,7 +222,7 @@ export default function BookingWidget({ slug: initialSlug, initialStartDate }) {
         </div>
       ) : (
         /* MAIN SCHEDULER BOARD */
-        <div className="glass-panel rounded-3xl overflow-hidden grid grid-cols-1 md:grid-cols-12 min-h-[500px]">
+        <div className="glass-panel glow-card rounded-3xl overflow-hidden grid grid-cols-1 md:grid-cols-12 min-h-[500px] transition-all duration-300">
           {/* LEFT SIDEBAR: MEET DETAIL */}
           <div className="md:col-span-4 p-8 border-b md:border-b-0 md:border-r border-white/10 bg-slate-950/40">
             <h1 className="text-2xl font-display font-extrabold text-white tracking-tight mb-1 uppercase">
@@ -319,73 +319,80 @@ export default function BookingWidget({ slug: initialSlug, initialStartDate }) {
                   </div>
                 </div>
 
-                {/* SLOT SELECTOR */}
-                <div className="flex flex-col">
-                  <h3 className="text-sm font-semibold text-slate-400 uppercase tracking-wider mb-4">
-                    {selectedDate ? formatDateHeader(selectedDate) : 'Select Date'}
-                  </h3>
-                  
-                  {selectedDate && (
-                    <div className="grid grid-cols-1 gap-2 overflow-y-auto max-h-[350px] pr-1">
-                      {slotsByDate[selectedDate].map((slot) => {
-                        const isSelected = selectedSlot === slot;
-                        return (
-                          <div key={slot.startTime} className="flex flex-col gap-2">
-                            <button
-                              onClick={() => setSelectedSlot(slot)}
-                              className={`w-full py-3 rounded-xl border text-sm font-bold transition cursor-pointer ${
-                                isSelected
-                                  ? 'bg-indigo-600 border-indigo-500 text-white shadow-lg'
-                                  : 'bg-slate-900/60 border-white/5 text-slate-300 hover:border-white/20 hover:bg-slate-900'
-                              }`}
-                            >
-                              {formatTime(slot.startTime)}
-                            </button>
+                  {/* SLOT SELECTOR */}
+                  <div className="flex flex-col flex-1">
+                    <h3 className="text-sm font-semibold text-slate-400 uppercase tracking-wider mb-4">
+                      {selectedDate ? formatDateHeader(selectedDate) : 'Select Date'}
+                    </h3>
+                    
+                    {selectedDate && (
+                      <div className="flex flex-col gap-4 flex-grow justify-between">
+                        {/* Slots Grid */}
+                        <div className="grid grid-cols-2 gap-2.5 overflow-y-auto max-h-[220px] pr-1">
+                          {slotsByDate[selectedDate].map((slot) => {
+                            const isSelected = selectedSlot === slot;
+                            return (
+                              <button
+                                key={slot.startTime}
+                                onClick={() => setSelectedSlot(slot)}
+                                className={`py-3 rounded-xl border text-xs font-bold transition-all duration-200 cursor-pointer active:scale-95 ${
+                                  isSelected
+                                    ? 'bg-gradient-to-r from-indigo-600 to-violet-600 border-indigo-500 text-white shadow-md shadow-indigo-500/10'
+                                    : 'bg-slate-900/50 border-white/5 text-slate-300 hover:border-white/15 hover:bg-slate-900 hover:scale-[1.02]'
+                                }`}
+                              >
+                                {formatTime(slot.startTime)}
+                              </button>
+                            );
+                          })}
+                        </div>
 
-                            {/* CONFIRMATION FORM UNDER SELECTED SLOT */}
-                            {isSelected && (
-                              <form onSubmit={handleBook} className="mt-2 p-4 rounded-xl border border-indigo-500 bg-slate-900/80 space-y-3 animate-fade-in">
-                                <h4 className="text-xs font-bold text-slate-300 uppercase">Confirm Booking Details</h4>
-                                <div className="space-y-2">
-                                  <input
-                                    type="text"
-                                    required
-                                    placeholder="Your Full Name"
-                                    value={name}
-                                    onChange={(e) => setName(e.target.value)}
-                                    className="w-full px-3 py-2 text-xs rounded-lg bg-slate-950 border border-white/10 text-white"
-                                  />
-                                  <input
-                                    type="email"
-                                    required
-                                    placeholder="Your Email Address"
-                                    value={email}
-                                    onChange={(e) => setEmail(e.target.value)}
-                                    className="w-full px-3 py-2 text-xs rounded-lg bg-slate-950 border border-white/10 text-white"
-                                  />
-                                </div>
-                                <button
-                                  type="submit"
-                                  disabled={bookingLoading}
-                                  className="w-full py-2 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold transition duration-200 cursor-pointer flex items-center justify-center gap-1.5"
-                                >
-                                  {bookingLoading ? (
-                                    <>
-                                      <div className="w-3.5 h-3.5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-                                      Booking...
-                                    </>
-                                  ) : (
-                                    'Confirm Reservation'
-                                  )}
-                                </button>
-                              </form>
-                            )}
-                          </div>
-                        );
-                      })}
-                    </div>
-                  )}
-                </div>
+                        {/* CONFIRMATION FORM (Cleanly separated below the slot grid) */}
+                        {selectedSlot && (
+                          <form onSubmit={handleBook} className="p-5 rounded-2xl border border-indigo-500/20 bg-slate-950/40 backdrop-blur-md space-y-4 animate-fade-in mt-auto shadow-inner">
+                            <div className="flex items-center justify-between border-b border-white/5 pb-2 mb-1">
+                              <h4 className="text-xs font-extrabold text-indigo-400 uppercase tracking-wider">Confirm Reservation</h4>
+                              <span className="text-[10px] font-bold text-slate-400 bg-white/5 px-2 py-0.5 rounded-full">
+                                {formatTime(selectedSlot.startTime)} ({timezone || 'UTC'})
+                              </span>
+                            </div>
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                              <input
+                                type="text"
+                                required
+                                placeholder="Your Full Name"
+                                value={name}
+                                onChange={(e) => setName(e.target.value)}
+                                className="w-full px-4 py-2.5 text-xs rounded-xl bg-slate-900/80 border border-white/10 text-white focus:border-indigo-500"
+                              />
+                              <input
+                                type="email"
+                                required
+                                placeholder="Your Email Address"
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
+                                className="w-full px-4 py-2.5 text-xs rounded-xl bg-slate-900/80 border border-white/10 text-white focus:border-indigo-500"
+                              />
+                            </div>
+                            <button
+                              type="submit"
+                              disabled={bookingLoading}
+                              className="w-full py-2.5 rounded-xl bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-white text-xs font-bold transition duration-200 cursor-pointer flex items-center justify-center gap-1.5 shadow-lg shadow-indigo-500/10 active:scale-[0.99]"
+                            >
+                              {bookingLoading ? (
+                                <>
+                                  <div className="w-3.5 h-3.5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                                  Processing reservation...
+                                </>
+                              ) : (
+                                'Confirm Spot & Send Calendar Invite'
+                              )}
+                            </button>
+                          </form>
+                        )}
+                      </div>
+                    )}
+                  </div>
               </div>
             )}
           </div>
